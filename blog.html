@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - 3dmarch</title>
+    <meta name="description" content="3dmarch Blog - News and Updates">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="logo-container">
+                <a href="index.html"><img src="https://dvqlxo2m2q99q.cloudfront.net/000_clients/4057105/page/w1000-logo-7ae611.png" alt="3DMarch" class="logo"></a>
+            </div>
+            <button class="hamburger" id="hamburger-btn" aria-label="Toggle Navigation">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="index.html">HOMEPAGE</a></li>
+                <li><a href="archviz.html">Archviz</a></li>
+                <li><a href="productvisualization.html">Product visualization</a></li>
+                <li><a href="gameassets.html">Virtual Realms</a></li>
+                <li><a href="blog.html" class="active">Blog</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <section class="blog-section">
+            <div class="blog-header zoom-in">
+                <h1>Blog</h1>
+                <p>Welcome to my blog. Here I will post news and updates.</p>
+            </div>
+
+            <div class="blog-container">
+                <div class="search-filter fade-in">
+                    <input type="text" placeholder="Search" class="search-field">
+                    <ul class="categories">
+                        <li class="active">All</li>
+                        <li>News</li>
+                        <li>Reviews</li>
+                    </ul>
+                </div>
+
+                <div class="blog-grid">
+                    <!-- Post 1: Petrovaradin Fortress -->
+                    <div class="blog-item zoom-in" data-title="petrovaradin fortress" data-text="using python to extract frames from video" data-category="News">
+                        <a href="blog-petrovaradin.html" class="blog-img-link">
+                            <img src="https://dvqlxo2m2q99q.cloudfront.net/000_clients/4057105/page/w1000-screenshot-1-94d269.jpg" alt="Petrovaradin Fortress">
+                        </a>
+                        <div class="blog-caption">
+                            <div class="caption-title"><a href="blog-petrovaradin.html">Petrovaradin Fortress</a></div>
+                            <div class="caption-date">24 February 2025</div>
+                            <div class="caption-text">Using python to extract frames from vide...</div>
+                            <div class="caption-btn"><a href="blog-petrovaradin.html">Read More</a></div>
+                        </div>
+                    </div>
+
+                    <!-- Post 2: In the forest -->
+                    <div class="blog-item zoom-in" data-title="in the forest" data-text="lorem ipsum dolor sit amet" data-category="Reviews">
+                        <a href="blog-intheforest.html" class="blog-img-link">
+                            <img src="https://d2z18g6bj3mwjn.cloudfront.net/pb4/_output/admin/_img/dummy4/blog/forest.jpg" alt="In the forest">
+                        </a>
+                        <div class="blog-caption">
+                            <div class="caption-title"><a href="blog-intheforest.html">In the forest</a></div>
+                            <div class="caption-date">14 October 2024</div>
+                            <div class="caption-text">Lorem ipsum dolor sit amet, consectetur...</div>
+                            <div class="caption-btn"><a href="blog-intheforest.html">Read More</a></div>
+                        </div>
+                    </div>
+
+                    <!-- Post 3: Ocean power -->
+                    <div class="blog-item zoom-in" data-title="ocean power" data-text="lorem ipsum dolor sit amet" data-category="News">
+                        <a href="blog-oceanpower.html" class="blog-img-link">
+                            <img src="https://d2z18g6bj3mwjn.cloudfront.net/pb4/_output/admin/_img/dummy4/blog/sea.jpg" alt="Ocean power">
+                        </a>
+                        <div class="blog-caption">
+                            <div class="caption-title"><a href="blog-oceanpower.html">Ocean power</a></div>
+                            <div class="caption-date">14 October 2024</div>
+                            <div class="caption-text">Lorem ipsum dolor sit amet, consectetur...</div>
+                            <div class="caption-btn"><a href="blog-oceanpower.html">Read More</a></div>
+                        </div>
+                    </div>
+
+                    <!-- Post 4: Desert -->
+                    <div class="blog-item zoom-in" data-title="desert" data-text="lorem ipsum dolor sit amet" data-category="News">
+                        <a href="blog-desert.html" class="blog-img-link">
+                            <img src="https://d2z18g6bj3mwjn.cloudfront.net/pb4/_output/admin/_img/dummy4/blog/desart.jpg" alt="Desert">
+                        </a>
+                        <div class="blog-caption">
+                            <div class="caption-title"><a href="blog-desert.html">Desert</a></div>
+                            <div class="caption-date">14 October 2024</div>
+                            <div class="caption-text">Lorem ipsum dolor sit amet, consectetur...</div>
+                            <div class="caption-btn"><a href="blog-desert.html">Read More</a></div>
+                        </div>
+                    </div>
+
+                    <!-- Post 5: Mountain calm -->
+                    <div class="blog-item zoom-in" data-title="mountain calm" data-text="lorem ipsum dolor sit amet" data-category="News">
+                        <a href="blog-mountaincalm.html" class="blog-img-link">
+                            <img src="https://d2z18g6bj3mwjn.cloudfront.net/pb4/_output/admin/_img/dummy4/blog/mountains.jpg" alt="Mountain calm">
+                        </a>
+                        <div class="blog-caption">
+                            <div class="caption-title"><a href="blog-mountaincalm.html">Mountain calm</a></div>
+                            <div class="caption-date">14 October 2024</div>
+                            <div class="caption-text">Lorem ipsum dolor sit amet, consectetur...</div>
+                            <div class="caption-btn"><a href="blog-mountaincalm.html">Read More</a></div>
+                        </div>
+                    </div>
+
+                    <!-- Post 6: Relax -->
+                    <div class="blog-item zoom-in" data-title="relax" data-text="lorem ipsum dolor sit amet" data-category="News">
+                        <a href="blog-relax.html" class="blog-img-link">
+                            <img src="https://d2z18g6bj3mwjn.cloudfront.net/pb4/_output/admin/_img/dummy4/blog/space.jpg" alt="Relax">
+                        </a>
+                        <div class="blog-caption">
+                            <div class="caption-title"><a href="blog-relax.html">Relax</a></div>
+                            <div class="caption-date">14 October 2024</div>
+                            <div class="caption-text">Lorem ipsum dolor sit amet, consectetur...</div>
+                            <div class="caption-btn"><a href="blog-relax.html">Read More</a></div>
+                        </div>
+                    </div>
+
+                    <!-- Post 7: To the lake -->
+                    <div class="blog-item zoom-in" data-title="to the lake" data-text="lorem ipsum dolor sit amet" data-category="News">
+                        <a href="blog-tothelake.html" class="blog-img-link">
+                            <img src="https://d2z18g6bj3mwjn.cloudfront.net/pb4/_output/admin/_img/dummy4/blog/lake.jpg" alt="To the lake">
+                        </a>
+                        <div class="blog-caption">
+                            <div class="caption-title"><a href="blog-tothelake.html">To the lake</a></div>
+                            <div class="caption-date">14 October 2024</div>
+                            <div class="caption-text">Lorem ipsum dolor sit amet, consectetur...</div>
+                            <div class="caption-btn"><a href="blog-tothelake.html">Read More</a></div>
+                        </div>
+                    </div>
+
+                    <!-- Post 8: In the Air -->
+                    <div class="blog-item zoom-in" data-title="in the air" data-text="lorem ipsum dolor sit amet" data-category="Reviews">
+                        <a href="blog-intheair.html" class="blog-img-link">
+                            <img src="https://d2z18g6bj3mwjn.cloudfront.net/pb4/_output/admin/_img/dummy4/blog/airplane.jpg" alt="In the Air">
+                        </a>
+                        <div class="blog-caption">
+                            <div class="caption-title"><a href="blog-intheair.html">In the Air</a></div>
+                            <div class="caption-date">14 October 2024</div>
+                            <div class="caption-text">Lorem ipsum dolor sit amet, consectetur...</div>
+                            <div class="caption-btn"><a href="blog-intheair.html">Read More</a></div>
+                        </div>
+                    </div>
+
+                    <!-- Post 9: Birds -->
+                    <div class="blog-item zoom-in" data-title="birds" data-text="lorem ipsum dolor sit amet" data-category="News">
+                        <a href="blog-birds.html" class="blog-img-link">
+                            <img src="https://d2z18g6bj3mwjn.cloudfront.net/pb4/_output/admin/_img/dummy4/blog/birds.jpg" alt="Birds">
+                        </a>
+                        <div class="blog-caption">
+                            <div class="caption-title"><a href="blog-birds.html">Birds</a></div>
+                            <div class="caption-date">14 October 2024</div>
+                            <div class="caption-text">Lorem ipsum dolor sit amet, consectetur...</div>
+                            <div class="caption-btn"><a href="blog-birds.html">Read More</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <h2 class="footer-logo zoom-in"><a href="index.html">3dmarch</a></h2>
+        <div class="social-links zoom-in">
+            <a href="https://www.instagram.com/markodoslov" target="_blank"><i data-feather="instagram"></i></a>
+            <a href="https://www.facebook.com/doslovmarko" target="_blank"><i data-feather="facebook"></i></a>
+            <a href="https://www.linkedin.com/in/markodoslov" target="_blank"><i data-feather="linkedin"></i></a>
+            <a href="https://markodoslov.artstation.com" target="_blank"><i data-feather="monitor"></i></a>
+            <a href="https://www.behance.net/doslovmark0" target="_blank"><i data-feather="pen-tool"></i></a>
+        </div>
+        <p class="copyright fade-in">2023. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

@@ -80,14 +80,28 @@ figure {
 /* =============================================
    NAVIGATION
    ============================================= */
+
 .main-nav {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 1000;
-    background: transparent;
-    transition: background-color 0.3s ease;
+    z-index: 2000;
+    transition: background-color 0.3s ease, transform 0.3s cubic-bezier(0.4,0,0.2,1), height 0.3s cubic-bezier(0.4,0,0.2,1);
+    min-height: 80px;
+}
+.section-header {
+    padding-top: 280px;
+}
+
+/* No body padding required now */
+.hero-text {
+    padding-top: 250px;
+}
+
+.main-nav.shrink {
+    transform: scaleY(0.8);
+    transform-origin: top;
 }
 
 .main-nav.scrolled {
@@ -115,6 +129,11 @@ figure {
 .logo-container .logo {
     max-height: 193px;
     width: auto;
+    transition: max-height 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+
+.main-nav.shrink .logo-container .logo {
+    max-height: 155px;
 }
 
 .nav-links {
@@ -306,7 +325,7 @@ figure {
 }
 
 .section-services-offset {
-    padding: 27.5vh 7vw 7vh 30vw;
+    padding: 2vh 7vw 7vh 10vw;
     min-height: 0;
     border-bottom: none;
 }
@@ -342,10 +361,16 @@ figure {
     position: relative;
     overflow: hidden;
     border-radius: 8px;
+    width: 100%;
+    aspect-ratio: 5/7;
+    min-height: 0;
+    background: #222;
 }
 
 .linkpage-item .item-image img {
     width: 100%;
+    height: 100%;
+    object-fit: cover;
     display: block;
     transition: transform 0.6s ease;
 }
@@ -376,22 +401,34 @@ figure {
 /* Service boxes grid (category pages) */
 .services-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 3vw;
-    margin-top: 3em;
+    margin-top: 1.2em;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .service-item {
-    text-align: left;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .service-item .item-image {
     position: relative;
     overflow: hidden;
+    width: 100%;
+    aspect-ratio: 1/1;
+    min-height: 0;
+    background: #222;
 }
 
 .service-item .item-image img {
     width: 100%;
+    height: 100%;
+    object-fit: cover;
     display: block;
     transition: transform 0.6s ease;
 }
@@ -441,8 +478,8 @@ figure {
 /* Dynamic image gallery grid (sub-pages like archexteriors, etc.) */
 .gallery-dynamic {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1vw;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5vw;
     margin-top: 3em;
     width: 100%;
 }
@@ -451,10 +488,18 @@ figure {
     position: relative;
     overflow: hidden;
     cursor: pointer;
+    width: 100%;
+    aspect-ratio: 16/9;
+}
+
+.gallery-dynamic .gallery-fig.vertical {
+    aspect-ratio: 3/4;
 }
 
 .gallery-dynamic .gallery-fig img {
     width: 100%;
+    height: 100%;
+    object-fit: cover;
     display: block;
     transition: transform 0.6s ease;
 }

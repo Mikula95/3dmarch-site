@@ -30,14 +30,16 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // ----- Navbar scroll background -----
+    // ----- Navbar scroll background & shrink -----
     const nav = document.querySelector('.main-nav');
     if (nav) {
         window.addEventListener('scroll', function () {
             if (window.scrollY > 50) {
                 nav.classList.add('scrolled');
+                nav.classList.add('shrink');
             } else {
                 nav.classList.remove('scrolled');
+                nav.classList.remove('shrink');
             }
         });
     }

@@ -133,7 +133,7 @@ figure {
 }
 
 .main-nav.shrink .logo-container .logo {
-    max-height: 155px;
+    max-height: 193px;
 }
 
 .nav-links {
@@ -518,7 +518,9 @@ figure {
 
 .team-grid {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
+    gap: 2em;
     margin-top: 3em;
 }
 
@@ -1161,5 +1163,10 @@ figure {
 
     .hero-imagetop .hero-text h1 {
         font-size: 2em;
+    }
+
+    .team-grid {
+        flex-direction: column;
+        align-items: center;
     }
 }

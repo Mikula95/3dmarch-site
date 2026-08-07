@@ -1,0 +1,32 @@
+IZVEŠTAJ O GIT GRANAMA I PROMENAMA
+===================================
+Datum: 7. Avgust 2026.
+
+Šta je urađeno:
+----------------
+1. Kreirali smo novu granu "testiranje" na kojoj ste bezbedno pravili izmene u kodu (dodavanje videa, menjanje CSS-a i HTML-a).
+2. Sačuvali smo (commit) sve vaše izmene na toj grani, uključujući i nove video fajlove.
+3. Prebacili smo se na glavnu granu ("main") i pre nego što smo je izmenili, napravili smo njenu rezervnu kopiju pod nazivom "main-backup".
+4. Spojili (merge) smo vaše izmene sa grane "testiranje" u glavnu granu "main".
+5. Otpremili (push) smo "main" i "main-backup" granu na GitHub. Vaše nove izmene (uključujući i index.html) su sada uživo na sajtu.
+
+
+Koja grana služi za šta (trenutno stanje):
+-------------------------------------------
+1. main 
+   - Ovo je vaša GLAVNA grana.
+   - Kod koji se nalazi na ovoj grani je onaj koji posetioci vide uživo na internetu.
+   - Trenutno sadrži najnovije izmene (nove videe, prepravljen index.html i style.css).
+
+2. main-backup
+   - Ovo je REZERVNA grana.
+   - Na njoj se nalazi stara verzija sajta, tačno onakva kakva je bila pre nego što smo danas ubacili nove videe i izmene.
+   - Ako ikada poželite da vratite sajt na staro, možemo iskoristiti kod sa ove grane.
+
+3. testiranje
+   - Ovo je RADNA grana.
+   - Nju smo koristili danas za eksperimentisanje. Možete nastaviti da je koristite u budućnosti kad god želite da probate neku novu funkciju na sajtu, a da pritom ne pokvarite glavni (live) sajt.
+
+Savet za ubuduće:
+-----------------
+Kada sledeći put budete radili na sajtu, preporučljivo je da prvo pređete na granu za testiranje (git checkout testiranje), tu pravite promene, a kada budete zadovoljni, prebacimo ih na "main" granu kao što smo uradili danas.

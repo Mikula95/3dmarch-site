@@ -59,75 +59,115 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // ----- Full Page Snap Scrolling -----
+    // ----- Full Page Snap Scrolling (Strict Mode) -----
     const snapSections = Array.from(document.querySelectorAll('.snap-section'));
     let isSnapping = false;
+    let currentSectionIndex = 0;
 
     if (snapSections.length > 0) {
-        function handleSnap(direction) {
-            const scrollPos = window.scrollY;
-            const threshold = 50; 
-            
-            let currentIndex = -1;
-            for (let i = 0; i < snapSections.length; i++) {
-                const rect = snapSections[i].getBoundingClientRect();
-                if (Math.abs(rect.top) < threshold) {
-                    currentIndex = i;
-                    break;
-                }
+        
+        
+        // Initialize current section based on scroll position
+        let initialScroll = window.scrollY;
+        let closestIndex = 0;
+        let minDiff = Infinity;
+        snapSections.forEach((sec, idx) => {
+            let diff = Math.abs(sec.getBoundingClientRect().top);
+            if (diff < minDiff) {
+                minDiff = diff;
+                closestIndex = idx;
             }
+        });
+        currentSectionIndex = closestIndex;
+        
+        // Hide scrollbar and disable native scrolling
 
-            if (currentIndex !== -1) {
-                let targetIndex = -1;
+        document.documentElement.classList.add('snap-active');
+        
+        // Create Sidebar Indicators
+        const indicatorContainer = document.createElement('div');
+        indicatorContainer.className = 'section-indicators';
+        snapSections.forEach((sec, idx) => {
+            const dot = document.createElement('div');
+            dot.className = 'indicator-dot';
+            if (idx === 0) dot.classList.add('active');
+            dot.addEventListener('click', () => goToSection(idx));
+            indicatorContainer.appendChild(dot);
+        });
+        
+        document.body.appendChild(indicatorContainer);
+        updateIndicators(currentSectionIndex);
 
-                if (direction > 0 && currentIndex < snapSections.length - 1) {
-                    targetIndex = currentIndex + 1;
-                } else if (direction < 0 && currentIndex > 0) {
-                    targetIndex = currentIndex - 1;
+
+        function updateIndicators(index) {
+            const dots = document.querySelectorAll('.indicator-dot');
+            dots.forEach((dot, idx) => {
+                if (idx === index) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
                 }
-
-                if (targetIndex !== -1) {
-                    isSnapping = true;
-                    document.documentElement.style.scrollBehavior = 'auto';
-                    
-                    const targetPosition = snapSections[targetIndex].getBoundingClientRect().top + scrollPos;
-                    const distance = targetPosition - scrollPos;
-                    const duration = 300; 
-                    let start = null;
-
-                    function subtleEase(t, b, c, d) {
-                        t /= d/2;
-                        if (t < 1) return c/2*t*t + b;
-                        t--;
-                        return -c/2 * (t*(t-2) - 1) + b;
-                    }
-
-                    function animation(currentTime) {
-                        if (start === null) start = currentTime;
-                        const timeElapsed = currentTime - start;
-                        const run = subtleEase(timeElapsed, scrollPos, distance, duration);
-                        
-                        window.scrollTo(0, run);
-                        
-                        if (timeElapsed < duration) {
-                            requestAnimationFrame(animation);
-                        } else {
-                            window.scrollTo(0, targetPosition);
-                            document.documentElement.style.scrollBehavior = '';
-                            isSnapping = false;
-                        }
-                    }
-                    requestAnimationFrame(animation);
-                    return true;
-                }
-            }
-            return false;
+            });
         }
 
-        window.addEventListener('wheel', function (e) {
-            if (isSnapping) { e.preventDefault(); return; }
-            if (handleSnap(e.deltaY > 0 ? 1 : -1)) {
+        function goToSection(index) {
+            if (isSnapping || index < 0 || index >= snapSections.length || index === currentSectionIndex) return;
+            isSnapping = true;
+            
+            const startScroll = window.scrollY;
+            const targetPosition = snapSections[index].getBoundingClientRect().top + startScroll;
+            const distance = targetPosition - startScroll;
+            const duration = 500; 
+            let start = null;
+            
+            currentSectionIndex = index;
+            updateIndicators(index);
+
+            function subtleEase(t, b, c, d) {
+                t /= d/2;
+                if (t < 1) return c/2*t*t + b;
+                t--;
+                return -c/2 * (t*(t-2) - 1) + b;
+            }
+
+            function animation(currentTime) {
+                if (start === null) start = currentTime;
+                const timeElapsed = currentTime - start;
+                const run = subtleEase(timeElapsed, startScroll, distance, duration);
+                
+                window.scrollTo(0, run);
+                
+                if (timeElapsed < duration) {
+                    requestAnimationFrame(animation);
+                } else {
+                    window.scrollTo(0, targetPosition);
+                    isSnapping = false;
+                }
+            }
+            requestAnimationFrame(animation);
+        }
+
+        
+        window.addEventListener('keydown', function(e) {
+            if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Space'].includes(e.code)) {
                 e.preventDefault();
+                if (isSnapping) return;
+                if (e.code === 'ArrowDown' || e.code === 'PageDown' || e.code === 'Space') {
+                    goToSection(currentSectionIndex + 1);
+                } else {
+                    goToSection(currentSectionIndex - 1);
+                }
+            }
+        }, { passive: false });
+
+        window.addEventListener('wheel', function (e) {
+            e.preventDefault();
+            if (isSnapping) return;
+            
+            if (e.deltaY > 30) {
+                goToSection(currentSectionIndex + 1);
+            } else if (e.deltaY < -30) {
+                goToSection(currentSectionIndex - 1);
             }
         }, { passive: false });
 
@@ -139,9 +179,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }, { passive: false });
 
         window.addEventListener('touchmove', function(e) {
-            if (isSnapping) {
-                e.preventDefault();
-            }
+            e.preventDefault(); // Completely block native scrolling!
         }, { passive: false });
 
         window.addEventListener('touchend', function(e) {
@@ -149,8 +187,17 @@ document.addEventListener('DOMContentLoaded', function () {
             touchEndY = e.changedTouches[0].screenY;
             const diff = touchStartY - touchEndY;
             
-            if (Math.abs(diff) > 40) {
-                handleSnap(diff > 0 ? 1 : -1);
+            if (diff > 40) {
+                goToSection(currentSectionIndex + 1);
+            } else if (diff < -40) {
+                goToSection(currentSectionIndex - 1);
+            }
+        });
+        
+        // Handle window resize to realign
+        window.addEventListener('resize', function() {
+            if (!isSnapping) {
+                window.scrollTo(0, snapSections[currentSectionIndex].getBoundingClientRect().top + window.scrollY);
             }
         });
     }
@@ -190,7 +237,7 @@ document.addEventListener('DOMContentLoaded', function () {
             lightboxImg.src = src;
             lightboxImg.alt = img.alt || '';
             lightboxOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
+            document.documentElement.classList.add('snap-active');
         }
 
         function closeLightbox() {
@@ -240,7 +287,7 @@ document.addEventListener('DOMContentLoaded', function () {
             btn.addEventListener('click', function (e) {
                 e.preventDefault();
                 modalOverlay.classList.add('active');
-                document.body.style.overflow = 'hidden';
+                document.documentElement.classList.add('snap-active');
             });
         });
 

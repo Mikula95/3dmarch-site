@@ -171,12 +171,52 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }, { passive: false });
 
+        let touchStartX = 0;
         let touchStartY = 0;
-        let touchEndY = 0;
+        let touchIsHorizontal = null;
         
         window.addEventListener('touchstart', function(e) {
+            touchStartX = e.changedTouches[0].screenX;
             touchStartY = e.changedTouches[0].screenY;
+            touchIsHorizontal = null;
         }, { passive: false });
+
+        window.addEventListener('touchmove', function(e) {
+            if (isSnapping) {
+                e.preventDefault();
+                return;
+            }
+            
+            if (touchIsHorizontal === null) {
+                const diffX = Math.abs(e.changedTouches[0].screenX - touchStartX);
+                const diffY = Math.abs(e.changedTouches[0].screenY - touchStartY);
+                if (diffX > diffY) {
+                    touchIsHorizontal = true;
+                } else {
+                    touchIsHorizontal = false;
+                }
+            }
+            
+            if (touchIsHorizontal) {
+                // allow horizontal native scroll
+                return;
+            } else {
+                // prevent vertical native scroll for fullpage
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        window.addEventListener('touchend', function(e) {
+            if (isSnapping || touchIsHorizontal) return;
+            const touchEndY = e.changedTouches[0].screenY;
+            const diff = touchStartY - touchEndY;
+            
+            if (diff > 40) {
+                goToSection(currentSectionIndex + 1);
+            } else if (diff < -40) {
+                goToSection(currentSectionIndex - 1);
+            }
+        });
 
         window.addEventListener('touchmove', function(e) {
             e.preventDefault(); // Completely block native scrolling!

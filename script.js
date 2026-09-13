@@ -64,13 +64,10 @@ document.addEventListener('DOMContentLoaded', function () {
     let isSnapping = false;
 
     if (snapSections.length > 0) {
-        window.addEventListener('wheel', function (e) {
-            if (isSnapping) return;
-
+        function handleSnap(direction) {
             const scrollPos = window.scrollY;
             const threshold = 50; 
             
-            // Find current section index based on scroll position
             let currentIndex = -1;
             for (let i = 0; i < snapSections.length; i++) {
                 const rect = snapSections[i].getBoundingClientRect();
@@ -80,22 +77,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
 
-            // Only intercept if we are snapped perfectly to a section
             if (currentIndex !== -1) {
                 let targetIndex = -1;
 
-                if (e.deltaY > 0 && currentIndex < snapSections.length - 1) {
-                    // Scrolling DOWN
+                if (direction > 0 && currentIndex < snapSections.length - 1) {
                     targetIndex = currentIndex + 1;
-                } else if (e.deltaY < 0 && currentIndex > 0) {
-                    // Scrolling UP
+                } else if (direction < 0 && currentIndex > 0) {
                     targetIndex = currentIndex - 1;
                 }
 
                 if (targetIndex !== -1) {
-                    e.preventDefault();
                     isSnapping = true;
-                    
                     document.documentElement.style.scrollBehavior = 'auto';
                     
                     const targetPosition = snapSections[targetIndex].getBoundingClientRect().top + scrollPos;
@@ -103,7 +95,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     const duration = 300; 
                     let start = null;
 
-                    // Subtle ease in-out quad
                     function subtleEase(t, b, c, d) {
                         t /= d/2;
                         if (t < 1) return c/2*t*t + b;
@@ -127,9 +118,41 @@ document.addEventListener('DOMContentLoaded', function () {
                         }
                     }
                     requestAnimationFrame(animation);
+                    return true;
                 }
             }
+            return false;
+        }
+
+        window.addEventListener('wheel', function (e) {
+            if (isSnapping) { e.preventDefault(); return; }
+            if (handleSnap(e.deltaY > 0 ? 1 : -1)) {
+                e.preventDefault();
+            }
         }, { passive: false });
+
+        let touchStartY = 0;
+        let touchEndY = 0;
+        
+        window.addEventListener('touchstart', function(e) {
+            touchStartY = e.changedTouches[0].screenY;
+        }, { passive: false });
+
+        window.addEventListener('touchmove', function(e) {
+            if (isSnapping) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        window.addEventListener('touchend', function(e) {
+            if (isSnapping) return;
+            touchEndY = e.changedTouches[0].screenY;
+            const diff = touchStartY - touchEndY;
+            
+            if (Math.abs(diff) > 40) {
+                handleSnap(diff > 0 ? 1 : -1);
+            }
+        });
     }
 
     // ----- Scroll Animations (IntersectionObserver) -----
@@ -418,3 +441,4 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 });
+

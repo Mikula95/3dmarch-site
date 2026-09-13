@@ -32,6 +32,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // ----- Navbar scroll background & shrink -----
     const nav = document.querySelector('.main-nav');
+    const whatWeDoSection = document.querySelector('.section-centered');
+    
     if (nav) {
         window.addEventListener('scroll', function () {
             if (window.scrollY > 50) {
@@ -41,7 +43,93 @@ document.addEventListener('DOMContentLoaded', function () {
                 nav.classList.remove('scrolled');
                 nav.classList.remove('shrink');
             }
+            
+            // Hide navbar completely in "What We Do" section for pure full screen
+            if (whatWeDoSection) {
+                const rect = whatWeDoSection.getBoundingClientRect();
+                // If What We Do section is taking up the screen, hide nav
+                if (rect.top <= 50 && rect.bottom >= window.innerHeight - 50) {
+                    nav.style.transform = 'translateY(-100%)';
+                    nav.style.pointerEvents = 'none';
+                } else {
+                    nav.style.transform = '';
+                    nav.style.pointerEvents = 'auto';
+                }
+            }
         });
+    }
+
+    // ----- Full Page Snap Scrolling -----
+    const snapSections = Array.from(document.querySelectorAll('.snap-section'));
+    let isSnapping = false;
+
+    if (snapSections.length > 0) {
+        window.addEventListener('wheel', function (e) {
+            if (isSnapping) return;
+
+            const scrollPos = window.scrollY;
+            const threshold = 50; 
+            
+            // Find current section index based on scroll position
+            let currentIndex = -1;
+            for (let i = 0; i < snapSections.length; i++) {
+                const rect = snapSections[i].getBoundingClientRect();
+                if (Math.abs(rect.top) < threshold) {
+                    currentIndex = i;
+                    break;
+                }
+            }
+
+            // Only intercept if we are snapped perfectly to a section
+            if (currentIndex !== -1) {
+                let targetIndex = -1;
+
+                if (e.deltaY > 0 && currentIndex < snapSections.length - 1) {
+                    // Scrolling DOWN
+                    targetIndex = currentIndex + 1;
+                } else if (e.deltaY < 0 && currentIndex > 0) {
+                    // Scrolling UP
+                    targetIndex = currentIndex - 1;
+                }
+
+                if (targetIndex !== -1) {
+                    e.preventDefault();
+                    isSnapping = true;
+                    
+                    document.documentElement.style.scrollBehavior = 'auto';
+                    
+                    const targetPosition = snapSections[targetIndex].getBoundingClientRect().top + scrollPos;
+                    const distance = targetPosition - scrollPos;
+                    const duration = 300; 
+                    let start = null;
+
+                    // Subtle ease in-out quad
+                    function subtleEase(t, b, c, d) {
+                        t /= d/2;
+                        if (t < 1) return c/2*t*t + b;
+                        t--;
+                        return -c/2 * (t*(t-2) - 1) + b;
+                    }
+
+                    function animation(currentTime) {
+                        if (start === null) start = currentTime;
+                        const timeElapsed = currentTime - start;
+                        const run = subtleEase(timeElapsed, scrollPos, distance, duration);
+                        
+                        window.scrollTo(0, run);
+                        
+                        if (timeElapsed < duration) {
+                            requestAnimationFrame(animation);
+                        } else {
+                            window.scrollTo(0, targetPosition);
+                            document.documentElement.style.scrollBehavior = '';
+                            isSnapping = false;
+                        }
+                    }
+                    requestAnimationFrame(animation);
+                }
+            }
+        }, { passive: false });
     }
 
     // ----- Scroll Animations (IntersectionObserver) -----
@@ -208,6 +296,125 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             });
         });
+    }
+
+    // ----- Horizontal Scroll Active Item & Edge Scroll -----
+    const scrollContainer = document.querySelector('.linkpage-grid');
+    const scrollItems = document.querySelectorAll('.linkpage-item');
+    if (scrollContainer && scrollItems.length > 0) {
+
+
+        // Edge Scrolling and Auto-Scroll
+        let scrollRAF;
+        let isScrolling = false;
+        let scrollSpeed = 0;
+        let isHovering = false;
+        let autoScrollSpeed = 1.5;
+
+        function scrollStep() {
+            if (isScrolling && scrollSpeed !== 0) {
+                scrollContainer.scrollBy({ left: scrollSpeed, behavior: 'auto' });
+                scrollRAF = requestAnimationFrame(scrollStep);
+            }
+        }
+
+        function autoScrollStep() {
+            if (!isHovering) {
+                scrollContainer.scrollBy({ left: autoScrollSpeed, behavior: 'auto' });
+                
+                // Ping-pong if hitting ends
+                if (scrollContainer.scrollLeft >= (scrollContainer.scrollWidth - scrollContainer.clientWidth - 1)) {
+                    autoScrollSpeed = -1.5;
+                } else if (scrollContainer.scrollLeft <= 1) {
+                    autoScrollSpeed = 1.5;
+                }
+                
+                requestAnimationFrame(autoScrollStep);
+            }
+        }
+        
+        // Start auto-scroll by default
+        requestAnimationFrame(autoScrollStep);
+
+        scrollContainer.addEventListener('mouseenter', () => {
+            isHovering = true;
+        });
+
+        scrollContainer.addEventListener('mousemove', (e) => {
+            const rect = scrollContainer.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            
+            const edgeThreshold = window.innerWidth * 0.15; // 15% of screen width from edges
+            const maxSpeed = 10; 
+            
+            if (mouseX > rect.width - edgeThreshold) {
+                // Scroll Right
+                scrollContainer.classList.add('is-scrolling');
+                scrollSpeed = maxSpeed;
+                if (!isScrolling) {
+                    isScrolling = true;
+                    scrollRAF = requestAnimationFrame(scrollStep);
+                }
+            } else if (mouseX < edgeThreshold) {
+                // Scroll Left
+                scrollContainer.classList.add('is-scrolling');
+                scrollSpeed = -maxSpeed;
+                if (!isScrolling) {
+                    isScrolling = true;
+                    scrollRAF = requestAnimationFrame(scrollStep);
+                }
+            } else {
+                scrollContainer.classList.remove('is-scrolling');
+                isScrolling = false;
+                cancelAnimationFrame(scrollRAF);
+                scrollSpeed = 0;
+            }
+        });
+
+        scrollContainer.addEventListener('mouseleave', () => {
+            isHovering = false;
+            requestAnimationFrame(autoScrollStep); // resume auto scroll
+            scrollContainer.classList.remove('is-scrolling');
+            isScrolling = false;
+            cancelAnimationFrame(scrollRAF);
+            scrollSpeed = 0;
+        });
+        
+
+        // ----- Parallax Effect -----
+        // Create wrappers for parallax so it doesn't conflict with CSS hover scale
+        scrollItems.forEach(item => {
+            const img = item.querySelector('.item-image img');
+            if (img) {
+                const wrap = document.createElement('div');
+                wrap.className = 'parallax-wrap';
+                wrap.style.width = '120%';
+                wrap.style.height = '100%';
+                wrap.style.marginLeft = '-10%';
+                wrap.style.willChange = 'transform';
+                img.parentNode.insertBefore(wrap, img);
+                wrap.appendChild(img);
+            }
+        });
+
+        function updateParallax() {
+            const center = window.innerWidth / 2;
+            scrollItems.forEach(item => {
+                const wrap = item.querySelector('.parallax-wrap');
+                if (wrap) {
+                    const rect = item.getBoundingClientRect();
+                    const offset = rect.left + rect.width / 2 - center;
+                    const parallaxX = offset * -0.15; // Move opposite to scroll
+                    wrap.style.transform = `translateX(${parallaxX}px)`;
+                }
+            });
+        }
+
+        scrollContainer.addEventListener('scroll', () => {
+            requestAnimationFrame(updateParallax);
+        });
+        window.addEventListener('resize', () => requestAnimationFrame(updateParallax));
+        updateParallax(); // initial call
     }
 
 });

@@ -1,16 +1,16 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product visualization - 3dmarch</title>
+    <title>Product Visualization - 3dmarch</title>
     <meta name="description" content="3dmarch - Product Visualization">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/feather-icons"></script>
-    <link rel="stylesheet" href="style.css?v=1.1">
+    <link rel="stylesheet" href="style.css?v=1.20">
 </head>
 
 <body>
@@ -25,55 +25,53 @@
             </button>
             <ul class="nav-links" id="nav-links">
                 <li><a href="index.html">HOMEPAGE</a></li>
-                <li><a href="archviz.html">Archviz</a></li>
-                <li><a href="productvisualization.html" class="active">Product visualization</a></li>
-                <li><a href="gameassets.html">Virtual Realms</a></li>
-                <li><a href="blog.html">Blog</a></li>
+                <li><a href="architecture.html">Architecture</a></li>
+                <li><a href="productvisualization.html" class="active">Product Visualization</a></li>
+                <li><a href="virtualrealms.html">Virtual Realms</a></li>
+                <li><a href="droneservices.html">Drone Services</a></li>
             </ul>
         </div>
     </nav>
 
     <main>
-        <!-- Hero Image Top -->
-        <section class="hero-imagetop">
-            <div class="hero-bg" style="background-image: url('images/135-camaleonda-005-pp-94a395.jpg');"></div>
-            <div class="hero-bg-mobile" style="background-image: url('images/135-camaleonda-005-pp-94a395.jpg');"></div>
-            <div class="hero-text">
-                <h1 class="zoom-in">Showcasing Products in Detail</h1>
-                <p class="fade-in">Detailed 3D models and renders of products, highlighting every feature with precision to enhance presentation and marketing.</p>
+        <!-- Hero Cover Section -->
+        <section class="hero-cover snap-section">
+            <div class="hero-bg" style="background-image: url('images/PRODUCT VISUALIZATION/PRODUCT%20VISUALIZATION%20HERO.jpg'); background-attachment: fixed; background-size: cover; background-position: center; position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0;"></div>
+            <div class="hero-bg-mobile" style="background-image: url('images/PRODUCT VISUALIZATION/FURNITURE/135-camaleonda-005-pp-94a395.jpg');"></div>
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <p class="hero-welcome fade-in">Explore</p>
+                <h1 class="hero-title zoom-in">Product Visualization</h1>
             </div>
         </section>
 
         <!-- Service Boxes -->
-        <section class="section-services">
-            <div class="services-grid">
-                <div class="service-item zoom-in">
-                    <a href="furniture.html" class="item-image">
-                        <img src="images/w1000-135-camaleonda-002-pp-8954d7.jpg" alt="Furniture">
-                    </a>
-                    <a href="furniture.html" class="item-title">Furniture</a>
-                    <div class="item-btn">
-                        <a href="furniture.html" class="btn-outline">See more</a>
+        <section class="section-centered snap-section" style="height: 100vh; display: flex; align-items: center; justify-content: center; padding: 0;">
+            <div class="linkpage-grid">
+                <a href="furniture.html" class="linkpage-item zoom-in">
+                    <div class="item-image">
+                        <img src="images/PRODUCT VISUALIZATION/FURNITURE/w1000-135-camaleonda-001-pp-ced520.jpg" alt="Furniture">
                     </div>
-                </div>
-                <div class="service-item zoom-in">
-                    <a href="fixtures.html" class="item-image">
-                        <img src="images/w1000-182869-issue-11-9b7292.png" alt="Fixtures">
-                    </a>
-                    <a href="fixtures.html" class="item-title">Fixtures</a>
-                    <div class="item-btn">
-                        <a href="fixtures.html" class="btn-outline">See more</a>
+                    <div class="item-caption">
+                        <h3>Furniture</h3>
                     </div>
-                </div>
-                <div class="service-item zoom-in">
-                    <a href="variousproductvizualisation.html" class="item-image">
-                        <img src="images/w1000-render4-a9a5aa.jpg" alt="Various">
-                    </a>
-                    <a href="variousproductvizualisation.html" class="item-title">Various</a>
-                    <div class="item-btn">
-                        <a href="variousproductvizualisation.html" class="btn-outline">See more</a>
+                </a>
+                <a href="fixtures.html" class="linkpage-item zoom-in">
+                    <div class="item-image">
+                        <img src="images/PRODUCT VISUALIZATION/FIXTURES/w1000-182869-issue-11-9b7292.png" alt="Fixtures">
                     </div>
-                </div>
+                    <div class="item-caption">
+                        <h3>Fixtures</h3>
+                    </div>
+                </a>
+                <a href="variousproductvizualisation.html" class="linkpage-item zoom-in">
+                    <div class="item-image">
+                        <img src="images/PRODUCT VISUALIZATION/VARIOUS/w1000-render4-a9a5aa.jpg" alt="Various">
+                    </div>
+                    <div class="item-caption">
+                        <h3>Various</h3>
+                    </div>
+                </a>
             </div>
         </section>
     </main>
@@ -90,7 +88,7 @@
         <p class="copyright fade-in">2023. All rights reserved.</p>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="script.js?v=1.14"></script>
 </body>
 
 </html>

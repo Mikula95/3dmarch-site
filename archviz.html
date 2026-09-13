@@ -1,16 +1,16 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Archviz - 3dmarch</title>
-    <meta name="description" content="3dmarch - Architectural Visualization">
+    <meta name="description" content="3dmarch - Archviz">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/feather-icons"></script>
-    <link rel="stylesheet" href="style.css?v=1.1">
+    <link rel="stylesheet" href="style.css?v=1.20">
 </head>
 
 <body>
@@ -25,46 +25,45 @@
             </button>
             <ul class="nav-links" id="nav-links">
                 <li><a href="index.html">HOMEPAGE</a></li>
-                <li><a href="archviz.html" class="active">Archviz</a></li>
-                <li><a href="productvisualization.html">Product visualization</a></li>
-                <li><a href="gameassets.html">Virtual Realms</a></li>
-                <li><a href="blog.html">Blog</a></li>
+                <li><a href="architecture.html" class="active">Architecture</a></li>
+                <li><a href="productvisualization.html">Product Visualization</a></li>
+                <li><a href="virtualrealms.html">Virtual Realms</a></li>
+                <li><a href="droneservices.html">Drone Services</a></li>
             </ul>
         </div>
     </nav>
 
     <main>
-        <!-- Hero Image Top -->
-        <section class="hero-imagetop">
-            <div class="hero-bg" style="background-image: url('images/marko-doslov-cam1-pp1-61d393.jpg');"></div>
+        <!-- Hero Cover Section -->
+        <section class="hero-cover snap-section">
+            <div class="hero-bg" style="background-image: url('images/ARCHITECTURE/Archviz/Archviz%20hero.jpg'); background-attachment: fixed; background-size: cover; background-position: center; position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0;"></div>
             <div class="hero-bg-mobile"></div>
-            <div class="hero-text">
-                <h1 class="zoom-in">Visualizing Architecture</h1>
-                <p class="fade-in">Bringing architectural concepts to life with high-quality visualizations, blending realism and design precision for stunning, immersive spaces.</p>
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <p class="hero-welcome fade-in">Explore</p>
+                <h1 class="hero-title zoom-in">Architectural Visualization</h1>
             </div>
         </section>
 
-        <!-- Service Boxes (offset) -->
-        <section class="section-services section-services-offset">
-            <div class="services-grid" style="grid-template-columns: repeat(2, 1fr);">
-                <div class="service-item zoom-in">
-                    <a href="archexteriors.html" class="item-image">
-                        <img src="images/w1000-marko-doslov-cam1-pp-7cc555.jpg" alt="Arch Exteriors">
-                    </a>
-                    <a href="archexteriors.html" class="item-title">Arch Exteriors</a>
-                    <div class="item-btn">
-                        <a href="archexteriors.html" class="btn-outline">See more</a>
+        <!-- Service Boxes -->
+        <section class="section-centered snap-section" style="height: 100vh; display: flex; align-items: center; justify-content: center; padding: 0;">
+            <div class="linkpage-grid">
+                <a href="archexteriors.html" class="linkpage-item zoom-in">
+                    <div class="item-image">
+                        <img src="images/ARCHITECTURE/Archviz/Arch Exteriors/w1000-marko-doslov-cam1-pp-7cc555.jpg" alt="Arch Exteriors">
                     </div>
-                </div>
-                <div class="service-item zoom-in">
-                    <a href="archinteriors.html" class="item-image">
-                        <img src="images/w1000-nomad-bedroom-01-pp-6e62aa.png" alt="Arch Interiors">
-                    </a>
-                    <a href="archinteriors.html" class="item-title">Arch Interiors</a>
-                    <div class="item-btn">
-                        <a href="archinteriors.html" class="btn-outline">See more</a>
+                    <div class="item-caption">
+                        <h3>Arch Exteriors</h3>
                     </div>
-                </div>
+                </a>
+                <a href="archinteriors.html" class="linkpage-item zoom-in">
+                    <div class="item-image">
+                        <img src="images/ARCHITECTURE/Archviz/Arch Interiors/w1000-nomad-bedroom-01-pp-6e62aa.png" alt="Arch Interiors">
+                    </div>
+                    <div class="item-caption">
+                        <h3>Arch Interiors</h3>
+                    </div>
+                </a>
             </div>
         </section>
     </main>
@@ -82,7 +81,7 @@
         <p class="copyright fade-in">2023. All rights reserved.</p>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="script.js?v=1.14"></script>
 </body>
 
 </html>

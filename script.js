@@ -218,21 +218,9 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        window.addEventListener('touchmove', function(e) {
-            e.preventDefault(); // Completely block native scrolling!
-        }, { passive: false });
 
-        window.addEventListener('touchend', function(e) {
-            if (isSnapping) return;
-            touchEndY = e.changedTouches[0].screenY;
-            const diff = touchStartY - touchEndY;
-            
-            if (diff > 40) {
-                goToSection(currentSectionIndex + 1);
-            } else if (diff < -40) {
-                goToSection(currentSectionIndex - 1);
-            }
-        });
+
+
         
         // Handle window resize to realign
         window.addEventListener('resize', function() {
@@ -481,6 +469,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
+
         scrollContainer.addEventListener('mouseleave', () => {
             isHovering = false;
             requestAnimationFrame(autoScrollStep); // resume auto scroll
@@ -489,6 +478,20 @@ document.addEventListener('DOMContentLoaded', function () {
             cancelAnimationFrame(scrollRAF);
             scrollSpeed = 0;
         });
+
+        scrollContainer.addEventListener('touchstart', () => {
+            isHovering = true;
+            scrollContainer.classList.remove('is-scrolling');
+            isScrolling = false;
+            cancelAnimationFrame(scrollRAF);
+            scrollSpeed = 0;
+        }, { passive: true });
+
+        scrollContainer.addEventListener('touchend', () => {
+            isHovering = false;
+            requestAnimationFrame(autoScrollStep);
+        }, { passive: true });
+
         
 
         // ----- Parallax Effect -----

@@ -1390,7 +1390,7 @@ figure {
         padding: 0 5vw;
         gap: 1.5em;
         margin-top: 2em;
-        scroll-snap-type: x mandatory;
+        
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none; /* Firefox */
     }
@@ -1400,7 +1400,7 @@ figure {
     .team-member {
         flex: 0 0 60%;
         max-width: none;
-        scroll-snap-align: center;
+        
     }
     .team-member .member-img {
         width: 100px;

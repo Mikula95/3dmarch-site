@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const startScroll = window.scrollY;
             const targetPosition = snapSections[index].getBoundingClientRect().top + startScroll;
             const distance = targetPosition - startScroll;
-            const duration = 250;
+            const duration = 120;
             let start = null;
             
             currentSectionIndex = index;

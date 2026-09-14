@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function () {
         indicatorContainer.className = 'section-indicators';
         
         let icons = [];
-        const circleIcon = '<svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><circle cx="12" cy="12" r="6"/></svg>';
+        const circleIcon = '<svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><circle cx="12" cy="12" r="8"/></svg>';
         const listIcon = '<svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>';
         
         // Check if we are on the index page

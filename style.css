@@ -650,6 +650,8 @@ figure {
 .team-member {
     text-align: center;
     max-width: 300px;
+    display: flex;
+    flex-direction: column;
 }
 
 .team-grid:hover .team-member:not(:hover) .member-img {
@@ -702,7 +704,7 @@ figure {
 }
 
 .team-member .member-btn {
-    margin-top: 0.5em;
+    margin-top: auto;
 }
 
 /* =============================================
@@ -1389,7 +1391,7 @@ figure {
         overflow-x: auto;
         overflow-y: hidden;
         justify-content: flex-start;
-        align-items: flex-start;
+        align-items: stretch;
         width: 100%;
         padding: 0 5vw;
         gap: 1.5em;

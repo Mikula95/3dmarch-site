@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             
             // Hide navbar completely in "What We Do" section for pure full screen
-            if (whatWeDoSection) {
+            if (whatWeDoSection && whatWeDoSection.querySelector('.linkpage-grid')) {
                 const rect = whatWeDoSection.getBoundingClientRect();
                 // If What We Do section is taking up the screen, hide nav
                 if (rect.top <= 50 && rect.bottom >= window.innerHeight - 50) {

@@ -653,14 +653,12 @@ figure {
 }
 
 .team-grid:hover .team-member:not(:hover) .member-img {
-    filter: brightness(0.5) saturate(30%);
-    transform: scale(0.9);
-    box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+    filter: brightness(0.4) saturate(10%);
 }
 
 .team-member .member-img {
-    width: 240px;
-    height: 240px;
+    width: 160px;
+    height: 160px;
     border-radius: 50%;
     object-fit: cover;
     margin: 0 auto 1em;
@@ -688,9 +686,7 @@ figure {
 }
 
 .team-member:hover .member-name {
-    transform: translateY(-5px) scale(1.05);
-    color: #fff;
-    text-shadow: 0 0 15px rgba(255,255,255,0.6);
+    color: var(--hover-color);
 }
 
 .team-member .member-role {
@@ -1385,16 +1381,30 @@ figure {
     }
     .team-grid {
         flex-direction: row;
-        flex-wrap: wrap;
-        gap: 1em;
-        margin-top: 1em;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        justify-content: flex-start;
+        align-items: center;
+        width: 100%;
+        padding: 0 5vw;
+        gap: 1.5em;
+        margin-top: 2em;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none; /* Firefox */
+    }
+    .team-grid::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Edge */
     }
     .team-member {
-        max-width: 45%;
+        flex: 0 0 60%;
+        max-width: none;
+        scroll-snap-align: center;
     }
     .team-member .member-img {
-        width: 120px;
-        height: 120px;
+        width: 100px;
+        height: 100px;
     }
     .team-member h3 {
         font-size: 1.1em;

@@ -397,17 +397,17 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // ----- Horizontal Scroll Active Item & Edge Scroll -----
-    const scrollContainer = document.querySelector('.linkpage-grid');
-    const scrollItems = document.querySelectorAll('.linkpage-item');
-    if (scrollContainer && scrollItems.length > 0) {
+    function initAutoScroll(containerSelector) {
+        const scrollContainer = document.querySelector(containerSelector);
+        if (!scrollContainer) return;
 
-
-        // Edge Scrolling and Auto-Scroll
         let scrollRAF;
         let isScrolling = false;
         let scrollSpeed = 0;
         let isHovering = false;
-        let autoScrollSpeed = 1.5;
+        let autoScrollSpeed = 0.5;
+        let autoScrollTimeout = null;
+        let autoScrollRAF = null;
 
         function scrollStep() {
             if (isScrolling && scrollSpeed !== 0) {
@@ -418,35 +418,41 @@ document.addEventListener('DOMContentLoaded', function () {
 
         function autoScrollStep() {
             if (!isHovering) {
-                scrollContainer.scrollBy({ left: autoScrollSpeed, behavior: 'auto' });
-                
-                // Ping-pong if hitting ends
-                if (scrollContainer.scrollLeft >= (scrollContainer.scrollWidth - scrollContainer.clientWidth - 1)) {
-                    autoScrollSpeed = -1.5;
-                } else if (scrollContainer.scrollLeft <= 1) {
-                    autoScrollSpeed = 1.5;
+                // Only scroll if it's actually horizontally scrollable by a meaningful margin
+                if (scrollContainer.scrollWidth > scrollContainer.clientWidth + 20) {
+                    scrollContainer.scrollBy({ left: autoScrollSpeed, behavior: 'auto' });
+                    
+                    // Ping-pong if hitting ends
+                    // Added a larger threshold (5px) to prevent sub-pixel vibration
+                    if (scrollContainer.scrollLeft >= (scrollContainer.scrollWidth - scrollContainer.clientWidth - 5)) {
+                        autoScrollSpeed = -0.5; // slow down to chess piece speed
+                    } else if (scrollContainer.scrollLeft <= 5) {
+                        autoScrollSpeed = 0.5; // slow down to chess piece speed
+                    }
                 }
                 
-                requestAnimationFrame(autoScrollStep);
+                autoScrollRAF = requestAnimationFrame(autoScrollStep);
             }
         }
         
         // Start auto-scroll by default
-        requestAnimationFrame(autoScrollStep);
+        autoScrollRAF = requestAnimationFrame(autoScrollStep);
 
         scrollContainer.addEventListener('mouseenter', () => {
             isHovering = true;
         });
 
         scrollContainer.addEventListener('mousemove', (e) => {
+            // Mouse panning logic only makes sense if it's scrollable
+            if (scrollContainer.scrollWidth <= scrollContainer.clientWidth) return;
+            
             const rect = scrollContainer.getBoundingClientRect();
             const mouseX = e.clientX - rect.left;
             
-            const edgeThreshold = window.innerWidth * 0.15; // 15% of screen width from edges
+            const edgeThreshold = window.innerWidth * 0.15;
             const maxSpeed = 10; 
             
             if (mouseX > rect.width - edgeThreshold) {
-                // Scroll Right
                 scrollContainer.classList.add('is-scrolling');
                 scrollSpeed = maxSpeed;
                 if (!isScrolling) {
@@ -454,7 +460,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     scrollRAF = requestAnimationFrame(scrollStep);
                 }
             } else if (mouseX < edgeThreshold) {
-                // Scroll Left
                 scrollContainer.classList.add('is-scrolling');
                 scrollSpeed = -maxSpeed;
                 if (!isScrolling) {
@@ -469,10 +474,10 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-
         scrollContainer.addEventListener('mouseleave', () => {
             isHovering = false;
-            requestAnimationFrame(autoScrollStep); // resume auto scroll
+            cancelAnimationFrame(autoScrollRAF);
+            autoScrollRAF = requestAnimationFrame(autoScrollStep); // resume auto scroll
             scrollContainer.classList.remove('is-scrolling');
             isScrolling = false;
             cancelAnimationFrame(scrollRAF);
@@ -485,12 +490,25 @@ document.addEventListener('DOMContentLoaded', function () {
             isScrolling = false;
             cancelAnimationFrame(scrollRAF);
             scrollSpeed = 0;
+            if (autoScrollTimeout) clearTimeout(autoScrollTimeout);
         }, { passive: true });
 
         scrollContainer.addEventListener('touchend', () => {
-            isHovering = false;
-            requestAnimationFrame(autoScrollStep);
+            if (autoScrollTimeout) clearTimeout(autoScrollTimeout);
+            autoScrollTimeout = setTimeout(() => {
+                isHovering = false;
+                cancelAnimationFrame(autoScrollRAF);
+                autoScrollRAF = requestAnimationFrame(autoScrollStep);
+            }, 3000); // Wait 3s before resuming to allow momentum scroll
         }, { passive: true });
+    }
+
+    initAutoScroll('.linkpage-grid');
+    initAutoScroll('.team-grid');
+
+    const scrollContainer = document.querySelector('.linkpage-grid');
+    const scrollItems = document.querySelectorAll('.linkpage-item');
+    if (scrollContainer && scrollItems.length > 0) {
 
         
 

@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             
             // Hide navbar completely in "What We Do" section for pure full screen
-            if (whatWeDoSection && whatWeDoSection.querySelector('.linkpage-grid')) {
+            if (whatWeDoSection) {
                 const rect = whatWeDoSection.getBoundingClientRect();
                 // If What We Do section is taking up the screen, hide nav
                 if (rect.top <= 50 && rect.bottom >= window.innerHeight - 50) {
@@ -59,206 +59,77 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // ----- Full Page Snap Scrolling (Strict Mode) -----
+    // ----- Full Page Snap Scrolling -----
     const snapSections = Array.from(document.querySelectorAll('.snap-section'));
     let isSnapping = false;
-    let currentSectionIndex = 0;
 
     if (snapSections.length > 0) {
-        
-        
-        // Initialize current section based on scroll position
-        let initialScroll = window.scrollY;
-        let closestIndex = 0;
-        let minDiff = Infinity;
-        snapSections.forEach((sec, idx) => {
-            let diff = Math.abs(sec.getBoundingClientRect().top);
-            if (diff < minDiff) {
-                minDiff = diff;
-                closestIndex = idx;
-            }
-        });
-        currentSectionIndex = closestIndex;
-        
-        // Hide scrollbar and disable native scrolling
-
-        document.documentElement.classList.add('snap-active');
-        
-        // Create Sidebar Indicators
-        const indicatorContainer = document.createElement('div');
-        indicatorContainer.className = 'section-indicators';
-        
-        let icons = [];
-        const circleIcon = '<svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><circle cx="12" cy="12" r="8"/></svg>';
-        const listIcon = '<svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>';
-        
-        // Check if we are on the index page
-        const isIndex = window.location.pathname === '/' || window.location.pathname.toLowerCase().endsWith('index.html');
-        
-        if (isIndex) {
-            icons = [
-                '<svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>', // Home
-                listIcon, // 3 lines
-                '<svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>', // Person
-                '<svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>' // Envelope
-            ];
-        } else {
-            // For all other pages: First icon is circle, second is list/dashes
-            icons = [
-                circleIcon,
-                listIcon
-            ];
-            // If there are more than 2 sections, fallback to circles for the rest just in case
-            for (let i = 2; i < snapSections.length; i++) {
-                icons.push(circleIcon);
-            }
-        }
-        
-
-        snapSections.forEach((sec, idx) => {
-            const dot = document.createElement('div');
-            dot.className = 'indicator-dot';
-            if (icons[idx]) {
-                dot.innerHTML = icons[idx];
-            }
-            if (idx === 0) dot.classList.add('active');
-            dot.addEventListener('click', () => goToSection(idx));
-            indicatorContainer.appendChild(dot);
-        });
-        
-        document.body.appendChild(indicatorContainer);
-        updateIndicators(currentSectionIndex);
-
-
-        function updateIndicators(index) {
-            const dots = document.querySelectorAll('.indicator-dot');
-            dots.forEach((dot, idx) => {
-                if (idx === index) {
-                    dot.classList.add('active');
-                } else {
-                    dot.classList.remove('active');
-                }
-            });
-        }
-
-        function goToSection(index) {
-            if (isSnapping || index < 0 || index >= snapSections.length || index === currentSectionIndex) return;
-            isSnapping = true;
-            
-            const startScroll = window.scrollY;
-            const targetPosition = snapSections[index].getBoundingClientRect().top + startScroll;
-            const distance = targetPosition - startScroll;
-            const duration = 120;
-            let start = null;
-            
-            currentSectionIndex = index;
-            updateIndicators(index);
-
-            function subtleEase(t, b, c, d) {
-                t /= d/2;
-                if (t < 1) return c/2*t*t + b;
-                t--;
-                return -c/2 * (t*(t-2) - 1) + b;
-            }
-
-            function animation(currentTime) {
-                if (start === null) start = currentTime;
-                const timeElapsed = currentTime - start;
-                const run = subtleEase(timeElapsed, startScroll, distance, duration);
-                
-                window.scrollTo(0, run);
-                
-                if (timeElapsed < duration) {
-                    requestAnimationFrame(animation);
-                } else {
-                    window.scrollTo(0, targetPosition);
-                    isSnapping = false;
-                }
-            }
-            requestAnimationFrame(animation);
-        }
-
-        
-        window.addEventListener('keydown', function(e) {
-            if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Space'].includes(e.code)) {
-                e.preventDefault();
-                if (isSnapping) return;
-                if (e.code === 'ArrowDown' || e.code === 'PageDown' || e.code === 'Space') {
-                    goToSection(currentSectionIndex + 1);
-                } else {
-                    goToSection(currentSectionIndex - 1);
-                }
-            }
-        }, { passive: false });
-
         window.addEventListener('wheel', function (e) {
-            e.preventDefault();
             if (isSnapping) return;
-            
-            if (e.deltaY > 30) {
-                goToSection(currentSectionIndex + 1);
-            } else if (e.deltaY < -30) {
-                goToSection(currentSectionIndex - 1);
-            }
-        }, { passive: false });
 
-        let touchStartX = 0;
-        let touchStartY = 0;
-        let touchIsHorizontal = null;
-        
-        window.addEventListener('touchstart', function(e) {
-            touchStartX = e.changedTouches[0].screenX;
-            touchStartY = e.changedTouches[0].screenY;
-            touchIsHorizontal = null;
-        }, { passive: false });
-
-        window.addEventListener('touchmove', function(e) {
-            if (isSnapping) {
-                e.preventDefault();
-                return;
-            }
+            const scrollPos = window.scrollY;
+            const threshold = 50; 
             
-            if (touchIsHorizontal === null) {
-                const diffX = Math.abs(e.changedTouches[0].screenX - touchStartX);
-                const diffY = Math.abs(e.changedTouches[0].screenY - touchStartY);
-                if (diffX > diffY) {
-                    touchIsHorizontal = true;
-                } else {
-                    touchIsHorizontal = false;
+            // Find current section index based on scroll position
+            let currentIndex = -1;
+            for (let i = 0; i < snapSections.length; i++) {
+                const rect = snapSections[i].getBoundingClientRect();
+                if (Math.abs(rect.top) < threshold) {
+                    currentIndex = i;
+                    break;
                 }
             }
-            
-            if (touchIsHorizontal) {
-                // allow horizontal native scroll
-                return;
-            } else {
-                // prevent vertical native scroll for fullpage
-                e.preventDefault();
+
+            // Only intercept if we are snapped perfectly to a section
+            if (currentIndex !== -1) {
+                let targetIndex = -1;
+
+                if (e.deltaY > 0 && currentIndex < snapSections.length - 1) {
+                    // Scrolling DOWN
+                    targetIndex = currentIndex + 1;
+                } else if (e.deltaY < 0 && currentIndex > 0) {
+                    // Scrolling UP
+                    targetIndex = currentIndex - 1;
+                }
+
+                if (targetIndex !== -1) {
+                    e.preventDefault();
+                    isSnapping = true;
+                    
+                    document.documentElement.style.scrollBehavior = 'auto';
+                    
+                    const targetPosition = snapSections[targetIndex].getBoundingClientRect().top + scrollPos;
+                    const distance = targetPosition - scrollPos;
+                    const duration = 300; 
+                    let start = null;
+
+                    // Subtle ease in-out quad
+                    function subtleEase(t, b, c, d) {
+                        t /= d/2;
+                        if (t < 1) return c/2*t*t + b;
+                        t--;
+                        return -c/2 * (t*(t-2) - 1) + b;
+                    }
+
+                    function animation(currentTime) {
+                        if (start === null) start = currentTime;
+                        const timeElapsed = currentTime - start;
+                        const run = subtleEase(timeElapsed, scrollPos, distance, duration);
+                        
+                        window.scrollTo(0, run);
+                        
+                        if (timeElapsed < duration) {
+                            requestAnimationFrame(animation);
+                        } else {
+                            window.scrollTo(0, targetPosition);
+                            document.documentElement.style.scrollBehavior = '';
+                            isSnapping = false;
+                        }
+                    }
+                    requestAnimationFrame(animation);
+                }
             }
         }, { passive: false });
-
-        window.addEventListener('touchend', function(e) {
-            if (isSnapping || touchIsHorizontal) return;
-            const touchEndY = e.changedTouches[0].screenY;
-            const diff = touchStartY - touchEndY;
-            
-            if (diff > 40) {
-                goToSection(currentSectionIndex + 1);
-            } else if (diff < -40) {
-                goToSection(currentSectionIndex - 1);
-            }
-        });
-
-
-
-
-        
-        // Handle window resize to realign
-        window.addEventListener('resize', function() {
-            if (!isSnapping) {
-                window.scrollTo(0, snapSections[currentSectionIndex].getBoundingClientRect().top + window.scrollY);
-            }
-        });
     }
 
     // ----- Scroll Animations (IntersectionObserver) -----
@@ -428,17 +299,17 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // ----- Horizontal Scroll Active Item & Edge Scroll -----
-    function initAutoScroll(containerSelector) {
-        const scrollContainer = document.querySelector(containerSelector);
-        if (!scrollContainer) return;
+    const scrollContainer = document.querySelector('.linkpage-grid');
+    const scrollItems = document.querySelectorAll('.linkpage-item');
+    if (scrollContainer && scrollItems.length > 0) {
 
+
+        // Edge Scrolling and Auto-Scroll
         let scrollRAF;
         let isScrolling = false;
         let scrollSpeed = 0;
         let isHovering = false;
-        let autoScrollSpeed = 0.5;
-        let autoScrollTimeout = null;
-        let autoScrollRAF = null;
+        let autoScrollSpeed = 1.5;
 
         function scrollStep() {
             if (isScrolling && scrollSpeed !== 0) {
@@ -449,41 +320,35 @@ document.addEventListener('DOMContentLoaded', function () {
 
         function autoScrollStep() {
             if (!isHovering) {
-                // Only scroll if it's actually horizontally scrollable by a meaningful margin
-                if (scrollContainer.scrollWidth > scrollContainer.clientWidth + 20) {
-                    scrollContainer.scrollBy({ left: autoScrollSpeed, behavior: 'auto' });
-                    
-                    // Ping-pong if hitting ends
-                    // Added a larger threshold (5px) to prevent sub-pixel vibration
-                    if (scrollContainer.scrollLeft >= (scrollContainer.scrollWidth - scrollContainer.clientWidth - 5)) {
-                        autoScrollSpeed = -0.5; // slow down to chess piece speed
-                    } else if (scrollContainer.scrollLeft <= 5) {
-                        autoScrollSpeed = 0.5; // slow down to chess piece speed
-                    }
+                scrollContainer.scrollBy({ left: autoScrollSpeed, behavior: 'auto' });
+                
+                // Ping-pong if hitting ends
+                if (scrollContainer.scrollLeft >= (scrollContainer.scrollWidth - scrollContainer.clientWidth - 1)) {
+                    autoScrollSpeed = -1.5;
+                } else if (scrollContainer.scrollLeft <= 1) {
+                    autoScrollSpeed = 1.5;
                 }
                 
-                autoScrollRAF = requestAnimationFrame(autoScrollStep);
+                requestAnimationFrame(autoScrollStep);
             }
         }
         
         // Start auto-scroll by default
-        autoScrollRAF = requestAnimationFrame(autoScrollStep);
+        requestAnimationFrame(autoScrollStep);
 
         scrollContainer.addEventListener('mouseenter', () => {
             isHovering = true;
         });
 
         scrollContainer.addEventListener('mousemove', (e) => {
-            // Mouse panning logic only makes sense if it's scrollable
-            if (scrollContainer.scrollWidth <= scrollContainer.clientWidth) return;
-            
             const rect = scrollContainer.getBoundingClientRect();
             const mouseX = e.clientX - rect.left;
             
-            const edgeThreshold = window.innerWidth * 0.15;
+            const edgeThreshold = window.innerWidth * 0.15; // 15% of screen width from edges
             const maxSpeed = 10; 
             
             if (mouseX > rect.width - edgeThreshold) {
+                // Scroll Right
                 scrollContainer.classList.add('is-scrolling');
                 scrollSpeed = maxSpeed;
                 if (!isScrolling) {
@@ -491,6 +356,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     scrollRAF = requestAnimationFrame(scrollStep);
                 }
             } else if (mouseX < edgeThreshold) {
+                // Scroll Left
                 scrollContainer.classList.add('is-scrolling');
                 scrollSpeed = -maxSpeed;
                 if (!isScrolling) {
@@ -507,40 +373,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
         scrollContainer.addEventListener('mouseleave', () => {
             isHovering = false;
-            cancelAnimationFrame(autoScrollRAF);
-            autoScrollRAF = requestAnimationFrame(autoScrollStep); // resume auto scroll
+            requestAnimationFrame(autoScrollStep); // resume auto scroll
             scrollContainer.classList.remove('is-scrolling');
             isScrolling = false;
             cancelAnimationFrame(scrollRAF);
             scrollSpeed = 0;
         });
-
-        scrollContainer.addEventListener('touchstart', () => {
-            isHovering = true;
-            scrollContainer.classList.remove('is-scrolling');
-            isScrolling = false;
-            cancelAnimationFrame(scrollRAF);
-            scrollSpeed = 0;
-            if (autoScrollTimeout) clearTimeout(autoScrollTimeout);
-        }, { passive: true });
-
-        scrollContainer.addEventListener('touchend', () => {
-            if (autoScrollTimeout) clearTimeout(autoScrollTimeout);
-            autoScrollTimeout = setTimeout(() => {
-                isHovering = false;
-                cancelAnimationFrame(autoScrollRAF);
-                autoScrollRAF = requestAnimationFrame(autoScrollStep);
-            }, 3000); // Wait 3s before resuming to allow momentum scroll
-        }, { passive: true });
-    }
-
-    initAutoScroll('.linkpage-grid');
-    initAutoScroll('.team-grid');
-
-    const scrollContainer = document.querySelector('.linkpage-grid');
-    const scrollItems = document.querySelectorAll('.linkpage-item');
-    if (scrollContainer && scrollItems.length > 0) {
-
         
 
         // ----- Parallax Effect -----

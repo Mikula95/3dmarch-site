@@ -91,7 +91,7 @@ figure {
     min-height: 80px;
 }
 .section-header {
-    padding-top: 280px;
+    margin-bottom: 2em;
 }
 
 /* No body padding required now */
@@ -266,7 +266,7 @@ figure {
 
 .hero-cover .hero-bg-mobile {
     display: none;
-    background-image: url('images/ARCHEXTERIORS/Hero_mobile.jpg');
+    background-image: url('images/ARCHITECTURE/Hero_mobile.jpg');
     background-size: cover;
     background-position: center;
 }
@@ -284,7 +284,7 @@ figure {
 
 .hero-imagetop .hero-bg-mobile {
     display: none;
-    background-image: url('images/ARCHEXTERIORS/Hero_mobile.jpg');
+    background-image: url('images/ARCHITECTURE/Hero_mobile.jpg');
     background-size: cover;
     background-position: center;
 }
@@ -404,35 +404,59 @@ figure {
 
 /* Portrait ratio link page grid (homepage "WHAT WE DO") */
 .linkpage-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 3vw;
-    margin-top: 3em;
-    width: 100%;
-    max-width: 1400px;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 0;
+    width: 100vw;
+    max-width: 100vw;
+    height: 100vh;
+    align-items: center;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    scroll-behavior: auto;
+    justify-content: safe center;
+}
+
+.linkpage-grid::-webkit-scrollbar {
+    display: none;
+}
+
+.linkpage-grid.is-scrolling .linkpage-item {
+    pointer-events: none;
 }
 
 .linkpage-item {
+    flex: 0 0 auto;
     display: flex;
     flex-direction: column;
-    border-radius: 8px;
     overflow: hidden;
     text-decoration: none;
-    transition: transform 0.3s ease;
+    transition: filter 0.25s ease-out;
+    position: relative;
 }
 
 .linkpage-item:hover {
-    transform: translateY(-5px);
+    z-index: 10;
+}
+
+.linkpage-grid:not(.is-scrolling):hover .linkpage-item:not(:hover) .item-image img {
+    filter: brightness(0.4) saturate(10%);
 }
 
 .linkpage-item .item-image {
     position: relative;
     overflow: hidden;
-    border-radius: 8px;
-    width: 100%;
+    height: 100vh; /* perfectly fill screen */
+    width: auto;
     aspect-ratio: 5/7;
     min-height: 0;
-    background: #222;
+    background: #000;
 }
 
 .linkpage-item .item-image img {
@@ -440,30 +464,57 @@ figure {
     height: 100%;
     object-fit: cover;
     display: block;
-    transition: transform 0.6s ease;
+    filter: saturate(50%);
+    transition: filter 0.25s ease-out, transform 0.3s ease-out;
 }
 
 .linkpage-item:hover .item-image img {
-    transform: scale(1.05);
+    filter: saturate(100%) brightness(1.1);
+    transform: scale(1.08);
 }
 
 .linkpage-item .item-caption {
-    padding: 1em 0;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 4em 1em 2em;
+    background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
     text-align: center;
+    z-index: 2;
+    pointer-events: none;
 }
 
 .linkpage-item .item-caption h3 {
-    font-size: 1.26em;
-    font-weight: bold;
-    letter-spacing: 0.042em;
+    font-size: 1.8em;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-shadow: 0 4px 15px rgba(0,0,0,0.9);
+    transition: transform 0.3s ease-out;
+}
+
+.linkpage-item:hover .item-caption h3 {
+    transform: translateY(-10px);
 }
 
 .linkpage-item .item-caption p {
     font-weight: 300;
-    line-height: 1.6em;
+    line-height: 1.4em;
     margin-top: 0.5em;
-    font-size: 0.95em;
-    color: rgba(255,255,255,0.7);
+    font-size: 0.9em;
+    color: rgba(255,255,255,0.8);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s ease-out;
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.linkpage-item:hover .item-caption p {
+    opacity: 1;
+    transform: translateY(-5px);
 }
 
 /* Service boxes grid (category pages) */
@@ -580,8 +631,12 @@ figure {
    TEAM SECTION
    ============================================= */
 .team-section {
-    padding: 7vh 5vw;
+    padding: 0 5vw;
     text-align: center;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .team-grid {
@@ -597,12 +652,31 @@ figure {
     max-width: 300px;
 }
 
+.team-grid:hover .team-member:not(:hover) .member-img {
+    filter: brightness(0.5) saturate(30%);
+    transform: scale(0.9);
+    box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+}
+
 .team-member .member-img {
-    width: 150px;
-    height: 150px;
+    width: 240px;
+    height: 240px;
     border-radius: 50%;
     object-fit: cover;
     margin: 0 auto 1em;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    border: 3px solid transparent;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* 3D bouncy pop */
+    position: relative;
+    z-index: 1;
+}
+
+.team-member:hover .member-img {
+    transform: translateY(-15px) scale(1.15);
+    box-shadow: 0 30px 50px rgba(0,0,0,0.9), 0 0 25px rgba(255,255,255,0.2);
+    border-color: rgba(255, 255, 255, 0.6);
+    filter: brightness(1.1) contrast(1.1);
+    z-index: 10;
 }
 
 .team-member .member-name {
@@ -610,6 +684,13 @@ figure {
     font-weight: bold;
     letter-spacing: 0.042em;
     margin-bottom: 0.3em;
+    transition: all 0.3s ease;
+}
+
+.team-member:hover .member-name {
+    transform: translateY(-5px) scale(1.05);
+    color: #fff;
+    text-shadow: 0 0 15px rgba(255,255,255,0.6);
 }
 
 .team-member .member-role {
@@ -633,7 +714,7 @@ figure {
    ============================================= */
 .cta-section {
     position: relative;
-    min-height: 70vh;
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1199,8 +1280,8 @@ figure {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .linkpage-grid {
-        grid-template-columns: repeat(2, 1fr);
+    .linkpage-item {
+        flex: 0 0 calc(70% - 1.5vw);
     }
 
     .gallery-dynamic {
@@ -1217,8 +1298,8 @@ figure {
         grid-template-columns: 1fr;
     }
 
-    .linkpage-grid {
-        grid-template-columns: 1fr;
+    .linkpage-item {
+        flex: 0 0 85%;
     }
 
     .gallery-dynamic {
@@ -1261,3 +1342,5 @@ figure {
         align-items: center;
     }
 }
+
+

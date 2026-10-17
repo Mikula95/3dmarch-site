@@ -1372,17 +1372,25 @@ figure {
     }
 
     .team-section {
-        justify-content: center;
-        padding-top: 10vh;
+        justify-content: flex-start;
+        padding-top: 105px;
         height: 100dvh;
         overflow: hidden;
+    }
+
+    .team-section .section-header {
+        margin-bottom: 0.4em;
+    }
+
+    .team-section .section-header h2 {
+        margin-bottom: 0.25em;
     }
 
     .team-grid {
         flex-direction: row;
         flex-wrap: nowrap;
         overflow-x: auto;
-        overflow-y: hidden;
+        overflow-y: visible;
         justify-content: flex-start;
         align-items: stretch;
         width: 100vw;
@@ -1390,9 +1398,9 @@ figure {
         position: relative;
         left: 50%;
         transform: translateX(-50%);
-        padding: 0 5vw;
+        padding: 28px 5vw 15px;
         gap: 1em;
-        margin-top: 2em;
+        margin-top: 0.5em;
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
         -ms-overflow-style: none;

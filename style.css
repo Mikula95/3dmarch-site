@@ -1473,3 +1473,15 @@ html.snap-active .main-footer {
     min-height: 460px;
     border: none;
 }
+
+@media (max-width: 1000px) {
+    main > .section-centered:first-child {
+        padding-top: 170px !important;
+    }
+
+    .section-centered .section-header h1 {
+        font-size: 2.1em;
+        white-space: normal;
+        line-height: 1.2;
+    }
+}

@@ -1374,12 +1374,13 @@ figure {
     .team-section {
         justify-content: flex-start;
         padding-top: 105px;
+        padding-bottom: 18dvh;
         height: 100dvh;
         overflow: hidden;
     }
 
     .team-section .section-header {
-        margin-bottom: 0.4em;
+        margin-bottom: 0;
     }
 
     .team-section .section-header h2 {
@@ -1398,9 +1399,10 @@ figure {
         position: relative;
         left: 50%;
         transform: translateX(-50%);
-        padding: 28px 5vw 15px;
+        padding: 28px 5vw 10px;
         gap: 1em;
-        margin-top: 0.5em;
+        margin-top: auto;
+        margin-bottom: 0;
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
         -ms-overflow-style: none;

@@ -670,13 +670,13 @@ figure {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 2em;
+    gap: 1.4em;
     margin-top: 3em;
 }
 
 .team-member {
     text-align: center;
-    max-width: 300px;
+    max-width: 210px;
     display: flex;
     flex-direction: column;
 }
@@ -734,8 +734,9 @@ figure {
 
 .team-member .member-bio {
     font-weight: 300;
-    line-height: 1.6em;
-    margin-bottom: 1em;
+    line-height: 1.5em;
+    max-width: 175px;
+    margin: 0 auto 1em;
 }
 
 .team-member .member-btn {
@@ -1390,7 +1391,7 @@ figure {
         left: 50%;
         transform: translateX(-50%);
         padding: 0 5vw;
-        gap: 1.5em;
+        gap: 1em;
         margin-top: 2em;
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
@@ -1402,8 +1403,15 @@ figure {
     }
 
     .team-member {
-        flex: 0 0 65%;
+        flex: 0 0 45%;
         max-width: none;
+    }
+
+    .team-member .member-bio {
+        max-width: 145px;
+        margin: 0 auto 0.8em;
+        font-size: 0.85em;
+        line-height: 1.45em;
     }
 
     .team-member .member-img {

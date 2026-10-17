@@ -393,15 +393,17 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // ----- Horizontal Scroll Active Item & Edge Scroll -----
-    function initAutoScroll(containerSelector) {
+    function initAutoScroll(containerSelector, baseSpeed) {
         const scrollContainer = document.querySelector(containerSelector);
         if (!scrollContainer) return;
 
+        const speedMag = typeof baseSpeed === 'number' ? baseSpeed : 0.75;
         let scrollRAF;
         let isScrolling = false;
         let scrollSpeed = 0;
         let isHovering = false;
-        let autoScrollSpeed = 1.5;
+        let autoScrollSpeed = speedMag;
+        let scrollCarry = 0;
         let autoScrollTimeout = null;
         let autoScrollRAF = null;
 
@@ -415,13 +417,18 @@ document.addEventListener('DOMContentLoaded', function () {
         function autoScrollStep() {
             if (!isHovering) {
                 if (scrollContainer.scrollWidth > scrollContainer.clientWidth + 10) {
-                    scrollContainer.scrollBy({ left: autoScrollSpeed, behavior: 'auto' });
+                    scrollCarry += autoScrollSpeed;
+                    const delta = Math.trunc(scrollCarry);
+                    if (delta !== 0) {
+                        scrollContainer.scrollLeft += delta;
+                        scrollCarry -= delta;
+                    }
 
                     // Ping-pong if hitting ends
                     if (scrollContainer.scrollLeft >= (scrollContainer.scrollWidth - scrollContainer.clientWidth - 2)) {
-                        autoScrollSpeed = -1.5;
+                        autoScrollSpeed = -speedMag;
                     } else if (scrollContainer.scrollLeft <= 2) {
-                        autoScrollSpeed = 1.5;
+                        autoScrollSpeed = speedMag;
                     }
                 }
                 autoScrollRAF = requestAnimationFrame(autoScrollStep);
@@ -495,8 +502,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }, { passive: true });
     }
 
-    initAutoScroll('.linkpage-grid');
-    initAutoScroll('.team-grid');
+    initAutoScroll('.linkpage-grid', 0.75);
+    initAutoScroll('.team-grid', 0.75);
 
     const scrollContainer = document.querySelector('.linkpage-grid');
     const scrollItems = document.querySelectorAll('.linkpage-item');

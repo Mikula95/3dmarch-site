@@ -283,7 +283,7 @@ figure {
 
 .hero-cover .hero-bg-mobile {
     display: none;
-    background-image: url('images/ARCHITECTURE/Hero_mobile.jpg');
+    background-image: url('images/INDEX/Hero_mobile.jpg');
     background-size: cover;
     background-position: center;
 }
@@ -301,7 +301,7 @@ figure {
 
 .hero-imagetop .hero-bg-mobile {
     display: none;
-    background-image: url('images/ARCHITECTURE/Hero_mobile.jpg');
+    background-image: url('images/INDEX/Hero_mobile.jpg');
     background-size: cover;
     background-position: center;
 }

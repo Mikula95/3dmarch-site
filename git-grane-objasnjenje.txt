@@ -2,8 +2,8 @@ IZVEŠTAJ O GIT GRANAMA I PROMENAMA
 ===================================
 Datum: 7. Avgust 2026.
 
-Šta je urađeno:
-----------------
+Šta je urađeno (7. Avgust 2026.):
+---------------------------------
 1. Kreirali smo novu granu "testiranje" na kojoj ste bezbedno pravili izmene u kodu (dodavanje videa, menjanje CSS-a i HTML-a).
 2. Sačuvali smo (commit) sve vaše izmene na toj grani, uključujući i nove video fajlove.
 3. Prebacili smo se na glavnu granu ("main") i pre nego što smo je izmenili, napravili smo njenu rezervnu kopiju pod nazivom "main-backup".
@@ -11,22 +11,32 @@ Datum: 7. Avgust 2026.
 5. Otpremili (push) smo "main" i "main-backup" granu na GitHub. Vaše nove izmene (uključujući i index.html) su sada uživo na sajtu.
 
 
+AŽURIRANJE - 17. Oktobar 2026.
+==============================
+Šta je urađeno:
+---------------
+1. Projekat je migriran u novi radni folder "E:\3DMARCH ORG" i pokrenut je lokalni live server.
+2. Na grani "testiranje" urađene su sledeće izmene:
+   - Uklonjen je bočni scrollbar pretraživača na svim HTML stranicama u projektu, uz zadržavanje navigacionih ikonica sa desne strane (.section-indicators).
+   - Uključen je striktni sekcija-po-sekcija prelaz sa glatkom animacijom (Strict Mode snap scrolling u script.js) na svim sekcijskim stranicama.
+   - Popravljen je meni (.main-nav) na svim stranicama galerija (archexteriors, archinteriors, fixtures, furniture, various, unity, unrealengine, droneimaging, videomaterial itd.) tako da ostaje vidljiv kada se skroluje nazad na vrh.
+   - U galeriju "Photogrammetry & Gaussian Splatting" (photogrammetry&gaussiansplatting.html) ubačen je uvećan SuperSplat 3D viewer iframe sa naslovom u jednom redu.
+   - U galeriju "Video Material" (videomaterial.html) ubačen je loop video (video.mp4) koji se automatski vrti bez kontrola (play/stop).
+   - U galeriju "Drone Imaging" (droneimaging.html) ubačen je interaktivni 360° panorama viewer (Pannellum WebGL) za sliku DJI_20260308193711_0143_D.JPG.
+   - Na stranici "Drone Services" (droneservices.html) postavljeni su novi thumbnail-ovi za Drone Imaging, Photogrammetry & Gaussian Splatting i Video Material.
+3. Napravljen je bekap prethodnog stanja ("main-backup" i "testiranje-backup").
+4. Sve izmene sa grane "testiranje" su spojene (merge) u glavnu granu "main" i otpremljene (push) na GitHub.
+
+
 Koja grana služi za šta (trenutno stanje):
 -------------------------------------------
-1. main 
-   - Ovo je vaša GLAVNA grana.
-   - Kod koji se nalazi na ovoj grani je onaj koji posetioci vide uživo na internetu.
-   - Trenutno sadrži najnovije izmene (nove videe, prepravljen index.html i style.css).
+1. main
+   - GLAVNA grana koja se prikazuje uživo na internetu (GitHub Pages / live sajt).
+   - Sadrži sve najnovije izmene od 17. oktobra 2026.
 
 2. main-backup
-   - Ovo je REZERVNA grana.
-   - Na njoj se nalazi stara verzija sajta, tačno onakva kakva je bila pre nego što smo danas ubacili nove videe i izmene.
-   - Ako ikada poželite da vratite sajt na staro, možemo iskoristiti kod sa ove grane.
+   - REZERVNA grana glavnog sajta (stanje pre spajanja najnovijih izmena od 17. oktobra 2026.).
+   - Služi za brz povratak na prethodnu verziju ukoliko ikada zatreba.
 
-3. testiranje
-   - Ovo je RADNA grana.
-   - Nju smo koristili danas za eksperimentisanje. Možete nastaviti da je koristite u budućnosti kad god želite da probate neku novu funkciju na sajtu, a da pritom ne pokvarite glavni (live) sajt.
-
-Savet za ubuduće:
------------------
-Kada sledeći put budete radili na sajtu, preporučljivo je da prvo pređete na granu za testiranje (git checkout testiranje), tu pravite promene, a kada budete zadovoljni, prebacimo ih na "main" granu kao što smo uradili danas.
+3. testiranje / testiranje-backup
+   - RADNA grana za lokalno testiranje novih funkcija pre prebacivanja na "main", zajedno sa svojom bekap kopijom ("testiranje-backup").

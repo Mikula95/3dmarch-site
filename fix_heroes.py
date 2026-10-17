@@ -3,7 +3,7 @@ import re
 
 htmls = ['productvisualization.html', 'virtualrealms.html']
 folders = ['PRODUCT VISUALIZATION', 'VIRTUAL REALMS']
-images = ['PRODUCT VISUALIZATION hero.jpg', 'VIRTUAL REALMS HERO.png']
+images = ['PRODUCT VISUALIZATION HERO.jpg', 'VIRTUAL REALMS HERO.png']
 
 for i in range(2):
     with open(htmls[i], 'r', encoding='utf-8') as f:

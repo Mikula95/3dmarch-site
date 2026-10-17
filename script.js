@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             
             // Hide navbar completely in "What We Do" section for pure full screen
-            if (whatWeDoSection) {
+            if (whatWeDoSection && whatWeDoSection.querySelector('.linkpage-grid')) {
                 const rect = whatWeDoSection.getBoundingClientRect();
                 // If What We Do section is taking up the screen, hide nav
                 if (rect.top <= 50 && rect.bottom >= window.innerHeight - 50) {
@@ -59,123 +59,171 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // ----- Full Page Snap Scrolling -----
+    // ----- Full Page Snap Scrolling (Strict Mode) -----
     const snapSections = Array.from(document.querySelectorAll('.snap-section'));
     let isSnapping = false;
+    let currentSectionIndex = 0;
 
     if (snapSections.length > 0) {
+        document.documentElement.classList.add('snap-active');
+
+        // Initialize current section based on scroll position
+        let closestIndex = 0;
+        let minDiff = Infinity;
+        snapSections.forEach((sec, idx) => {
+            let diff = Math.abs(sec.getBoundingClientRect().top);
+            if (diff < minDiff) {
+                minDiff = diff;
+                closestIndex = idx;
+            }
+        });
+        currentSectionIndex = closestIndex;
+
         // Create Sidebar Indicators
         const indicatorContainer = document.createElement('div');
         indicatorContainer.className = 'section-indicators';
-        
+
         let icons = [
             '<svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>', // Home
             '<svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>', // 3 lines
             '<svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>', // Person
             '<svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>' // Envelope
         ];
-        
+
         snapSections.forEach((sec, idx) => {
             const dot = document.createElement('div');
             dot.className = 'indicator-dot';
             if (icons[idx]) {
                 dot.innerHTML = icons[idx];
             }
-            if (idx === 0) dot.classList.add('active');
-            dot.addEventListener('click', () => {
-                const scrollPos = window.scrollY;
-                const targetPosition = snapSections[idx].getBoundingClientRect().top + scrollPos;
-                window.scrollTo({ top: targetPosition, behavior: 'smooth' });
-            });
+            if (idx === currentSectionIndex) dot.classList.add('active');
+            dot.addEventListener('click', () => goToSection(idx));
             indicatorContainer.appendChild(dot);
         });
         document.body.appendChild(indicatorContainer);
-        
-        // Update indicators on scroll
-        window.addEventListener('scroll', () => {
-            let currentIndex = 0;
-            let minDiff = Infinity;
-            snapSections.forEach((sec, idx) => {
-                let diff = Math.abs(sec.getBoundingClientRect().top);
-                if (diff < minDiff) {
-                    minDiff = diff;
-                    currentIndex = idx;
-                }
-            });
-            
+        updateIndicators(currentSectionIndex);
+
+        function updateIndicators(index) {
             const dots = document.querySelectorAll('.indicator-dot');
             dots.forEach((dot, idx) => {
-                if (idx === currentIndex) dot.classList.add('active');
+                if (idx === index) dot.classList.add('active');
                 else dot.classList.remove('active');
             });
-        });
+        }
 
-        window.addEventListener('wheel', function (e) {
-            if (isSnapping) return;
+        function goToSection(index) {
+            if (isSnapping || index < 0 || index >= snapSections.length || index === currentSectionIndex) return;
+            isSnapping = true;
 
-            const scrollPos = window.scrollY;
-            const threshold = 50; 
-            
-            // Find current section index based on scroll position
-            let currentIndex = -1;
-            for (let i = 0; i < snapSections.length; i++) {
-                const rect = snapSections[i].getBoundingClientRect();
-                if (Math.abs(rect.top) < threshold) {
-                    currentIndex = i;
-                    break;
-                }
+            document.documentElement.style.scrollBehavior = 'auto';
+
+            const startScroll = window.scrollY;
+            const targetPosition = snapSections[index].getBoundingClientRect().top + startScroll;
+            const distance = targetPosition - startScroll;
+            const duration = 450;
+            let start = null;
+
+            currentSectionIndex = index;
+            updateIndicators(index);
+
+            function subtleEase(t, b, c, d) {
+                t /= d / 2;
+                if (t < 1) return c / 2 * t * t + b;
+                t--;
+                return -c / 2 * (t * (t - 2) - 1) + b;
             }
 
-            // Only intercept if we are snapped perfectly to a section
-            if (currentIndex !== -1) {
-                let targetIndex = -1;
+            function animation(currentTime) {
+                if (start === null) start = currentTime;
+                const timeElapsed = currentTime - start;
+                const run = subtleEase(Math.min(timeElapsed, duration), startScroll, distance, duration);
 
-                if (e.deltaY > 0 && currentIndex < snapSections.length - 1) {
-                    // Scrolling DOWN
-                    targetIndex = currentIndex + 1;
-                } else if (e.deltaY < 0 && currentIndex > 0) {
-                    // Scrolling UP
-                    targetIndex = currentIndex - 1;
-                }
+                window.scrollTo(0, run);
 
-                if (targetIndex !== -1) {
-                    e.preventDefault();
-                    isSnapping = true;
-                    
-                    document.documentElement.style.scrollBehavior = 'auto';
-                    
-                    const targetPosition = snapSections[targetIndex].getBoundingClientRect().top + scrollPos;
-                    const distance = targetPosition - scrollPos;
-                    const duration = 300; 
-                    let start = null;
-
-                    // Subtle ease in-out quad
-                    function subtleEase(t, b, c, d) {
-                        t /= d/2;
-                        if (t < 1) return c/2*t*t + b;
-                        t--;
-                        return -c/2 * (t*(t-2) - 1) + b;
-                    }
-
-                    function animation(currentTime) {
-                        if (start === null) start = currentTime;
-                        const timeElapsed = currentTime - start;
-                        const run = subtleEase(timeElapsed, scrollPos, distance, duration);
-                        
-                        window.scrollTo(0, run);
-                        
-                        if (timeElapsed < duration) {
-                            requestAnimationFrame(animation);
-                        } else {
-                            window.scrollTo(0, targetPosition);
-                            document.documentElement.style.scrollBehavior = '';
-                            isSnapping = false;
-                        }
-                    }
+                if (timeElapsed < duration) {
                     requestAnimationFrame(animation);
+                } else {
+                    window.scrollTo(0, targetPosition);
+                    document.documentElement.style.scrollBehavior = '';
+                    setTimeout(function () {
+                        isSnapping = false;
+                    }, 80);
+                }
+            }
+            requestAnimationFrame(animation);
+        }
+
+        window.addEventListener('keydown', function (e) {
+            if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Space'].includes(e.code)) {
+                if (e.target && ['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
+                e.preventDefault();
+                if (isSnapping) return;
+                if (e.code === 'ArrowDown' || e.code === 'PageDown' || e.code === 'Space') {
+                    goToSection(currentSectionIndex + 1);
+                } else {
+                    goToSection(currentSectionIndex - 1);
                 }
             }
         }, { passive: false });
+
+        window.addEventListener('wheel', function (e) {
+            const modalActive = document.querySelector('.modal-overlay.active, .lightbox-overlay.active');
+            if (modalActive) return;
+
+            e.preventDefault();
+            if (isSnapping) return;
+
+            if (e.deltaY > 15) {
+                goToSection(currentSectionIndex + 1);
+            } else if (e.deltaY < -15) {
+                goToSection(currentSectionIndex - 1);
+            }
+        }, { passive: false });
+
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let touchIsHorizontal = null;
+
+        window.addEventListener('touchstart', function (e) {
+            touchStartX = e.changedTouches[0].screenX;
+            touchStartY = e.changedTouches[0].screenY;
+            touchIsHorizontal = null;
+        }, { passive: false });
+
+        window.addEventListener('touchmove', function (e) {
+            if (isSnapping) {
+                e.preventDefault();
+                return;
+            }
+
+            if (touchIsHorizontal === null) {
+                const diffX = Math.abs(e.changedTouches[0].screenX - touchStartX);
+                const diffY = Math.abs(e.changedTouches[0].screenY - touchStartY);
+                touchIsHorizontal = diffX > diffY;
+            }
+
+            if (!touchIsHorizontal) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        window.addEventListener('touchend', function (e) {
+            if (isSnapping || touchIsHorizontal) return;
+            const touchEndY = e.changedTouches[0].screenY;
+            const diff = touchStartY - touchEndY;
+
+            if (diff > 40) {
+                goToSection(currentSectionIndex + 1);
+            } else if (diff < -40) {
+                goToSection(currentSectionIndex - 1);
+            }
+        });
+
+        window.addEventListener('resize', function () {
+            if (!isSnapping && snapSections[currentSectionIndex]) {
+                window.scrollTo(0, snapSections[currentSectionIndex].getBoundingClientRect().top + window.scrollY);
+            }
+        });
     }
 
     // ----- Scroll Animations (IntersectionObserver) -----

@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BIM Modeling - 3dmarch</title>
+    <title>Photogrammetry & Gaussian Splatting - 3dmarch</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/feather-icons"></script>
-    <link rel="stylesheet" href="style.css?v=3.00">
+    <link rel="stylesheet" href="style.css?v=3.06">
 </head>
 
 <body>
@@ -24,22 +24,22 @@
             </button>
             <ul class="nav-links" id="nav-links">
                 <li><a href="index.html">HOMEPAGE</a></li>
-                <li><a href="architecture.html" class="active">Architecture</a></li>
+                <li><a href="architecture.html">Architecture</a></li>
                 <li><a href="productvisualization.html">Product Visualization</a></li>
                 <li><a href="virtualrealms.html">Virtual Realms</a></li>
-                <li><a href="droneservices.html">Drone Services</a></li>
+                <li><a href="droneservices.html" class="active">Drone Services</a></li>
             </ul>
         </div>
     </nav>
 
     <main>
-        <section class="section-centered" style="padding-top: 15vh;">
-            <div class="section-header">
-                <h1 class="zoom-in">BIM Modeling</h1>
-                <p class="fade-in">Intelligent 3D building modeling for highly efficient planning, coordination, and lifecycle management of your entire project.</p>
+        <section class="section-centered" style="padding-top: 11vh; padding-bottom: 2vh;">
+            <div class="section-header" style="margin-bottom: 0.5em;">
+                <h1 class="zoom-in">Photogrammetry & Gaussian Splatting</h1>
+                <p class="fade-in">Advanced 3D scanning and reconstruction for highly accurate models and immersive environments.</p>
             </div>
             <div class="gallery-dynamic">
-
+                <iframe id="viewer" width="1600" height="800" allow="fullscreen; xr-spatial-tracking" src="https://superspl.at/s?id=8d315e10"></iframe>
             </div>
         </section>
     </main>
@@ -64,8 +64,7 @@
         <p class="copyright fade-in">2023. All rights reserved.</p>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="script.js?v=3.06"></script>
 </body>
 
 </html>
-

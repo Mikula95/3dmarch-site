@@ -9,7 +9,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/feather-icons"></script>
-    <link rel="stylesheet" href="style.css?v=3.00">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css">
+    <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+    <link rel="stylesheet" href="style.css?v=3.07">
 </head>
 
 <body>
@@ -33,13 +35,13 @@
     </nav>
 
     <main>
-        <section class="section-centered" style="padding-top: 15vh;">
-            <div class="section-header">
+        <section class="section-centered" style="padding-top: 11vh; padding-bottom: 2vh;">
+            <div class="section-header" style="margin-bottom: 0.5em;">
                 <h1 class="zoom-in">Drone Imaging</h1>
                 <p class="fade-in">High-resolution aerial photography for real estate and construction progress tracking.</p>
             </div>
             <div class="gallery-dynamic">
-
+                <div id="panorama-360" class="panorama-viewer"></div>
             </div>
         </section>
     </main>
@@ -64,8 +66,23 @@
         <p class="copyright fade-in">2023. All rights reserved.</p>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="script.js?v=3.06"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            if (typeof pannellum !== 'undefined') {
+                pannellum.viewer('panorama-360', {
+                    type: 'equirectangular',
+                    panorama: 'images/DRONE%20SERVICES/Drone%20Imaging/DJI_20260308193711_0143_D.JPG',
+                    autoLoad: true,
+                    autoRotate: -2,
+                    compass: false,
+                    showZoomCtrl: true,
+                    showFullscreenCtrl: true,
+                    hfov: 100
+                });
+            }
+        });
+    </script>
 </body>
 
 </html>
-
